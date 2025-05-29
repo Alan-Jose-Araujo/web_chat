@@ -10,9 +10,7 @@ export default function MessageInput() {
     const [input, setInput] = useState('');
     const clientRef = useRef(null);
     const seenMessages = useRef(new Set());
-    const [senderName, setSenderName] = useState(() => {
-        return sessionStorage.getItem('chat_sender_name') || '';
-    })
+    const [senderName, setSenderName] = useState('');
     const [senderNameInput, setSenderNameInput] = useState('');
 
     useEffect(() => {
@@ -69,10 +67,10 @@ export default function MessageInput() {
 
     return (
         <>
-            <div>
+            <div id='chat-app'>
                 <h1>MQTT Web Chat</h1>
                 {!senderName.trim() && (
-                    <div style={{marginBottom: '20px'}}>
+                    <div style={{marginBottom: '20px', marginTop: '15px'}}>
                         <input
                             type='text'
                             placeholder='Your name is'
@@ -86,21 +84,24 @@ export default function MessageInput() {
                         </button>
                     </div>
                 )}
-                <div>
+                <div id='messages-container'>
                     {messages.map((message, index) => (
-                        <div key={index} style={{marginBottom: '5px'}}>
+                        <div key={index} style={{marginBottom: '15px'}}>
                             <strong>{message.senderName}:</strong> {message.text}
                         </div>
                     ))}
                 </div>
-                <input
-                    type='text'
-                    value={input}
-                    onChange={(event) => setInput(event.target.value)}
-                    onKeyDown={(event) => event.key === 'Enter' && sendMessage()}
-                    disabled={!senderName.trim()}
-                />
-                <button type='button' onClick={sendMessage}>Send</button>
+                <div id='send-message'>
+                    <input
+                        type='text'
+                        value={input}
+                        onChange={(event) => setInput(event.target.value)}
+                        onKeyDown={(event) => event.key === 'Enter' && sendMessage()}
+                        disabled={!senderName.trim()}
+                        placeholder='Type a message here...'
+                    />
+                    <button type='button' onClick={sendMessage}>Send</button>
+                </div>
             </div>
         </>
     );
